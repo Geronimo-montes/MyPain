@@ -1,0 +1,30 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <img src="favicon.ico" class="navbar-brand" alt="MyPaint">
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse"
+    data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02"
+    aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse ml-4" id="navbarTogglerDemo02">
+    <ul class="navbar-nav mr-auto text-white">
+
+      <div class="col mr-4 text-center">
+        <p class="mb-0">Abrir</p>
+        <div class="row">
+          <li class="nav-item">
+            <i class="nav-link fas fa-folder-open fa-5x"> </i>
+          </li>
+        </div>
+      </div>
+
+      <app-opciones></app-opciones>
+
+      <app-herramientas (setButtonActive)="setbuttonActive($event)"
+        [buttonActive]="buttonActive"></app-herramientas>
+
+      <app-figuras></app-figuras>
+    </ul>
+  </div>
+</nav>

@@ -1,0 +1,12 @@
+<app-navbar></app-navbar>
+
+<div class="container-fluid">
+  <div class="row mt-4 bg-black-500 justify-content-md-center">
+
+    <app-lienzo (setHeight)="height=$event" (setHeight)="width=$event">
+    </app-lienzo>
+
+  </div>
+</div>
+
+<app-footer [height]="height" [width]="width"></app-footer>

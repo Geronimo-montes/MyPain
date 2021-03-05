@@ -1,0 +1,42 @@
+<footer
+  class="container-fluid fixed-bottom bg-light border-top border-secondary">
+
+  <div class="row m-auto justify-content-between">
+
+    <div class="row mt-2 mb-0 ml-2">
+      <i class="fas fa-arrows-alt fa-2x"></i>
+      <h6 class="ml-2 mt-1"> {{height}}, {{width}}</h6>
+    </div>
+
+
+
+    <div class="row">
+      <!--Rango para el ancho del trazodo-->
+      <div class="ml-1 mt-3">
+        <h6>Ancho de linea: {{range.value | number:'2.0-0'}}</h6>
+      </div>
+
+      <div class="mr-4 ml-2  mt-3">
+        <input #range type="range" class="custom-range" [value]="anchoTrazo"
+          [min]="min" [max]="max" (change)="setAnchoTrazo(range.value)">
+      </div>
+
+      <!--Color seleccionado-->
+      <div class="ml-4 mt-3 mr-2">
+        <h6>Color Activo</h6>
+      </div>
+
+      <button class="btn btn-dark shadow rounded-circle p-0 m-1 mt-2 mb-1 mr-4">
+        <i class="fas fa-circle fa-2x" [style.color]="colorActivo"></i>
+      </button>
+
+      <button *ngFor="let color of colores"
+        class="btn btn-dark shadow rounded-circle p-0 m-1 mt-2 mb-1">
+        <i class="fas fa-circle fa-2x" [style.color]="color.hex"
+          (click)="setColorTrazo(color.hex)"></i>
+      </button>
+    </div>
+
+  </div>
+
+</footer>

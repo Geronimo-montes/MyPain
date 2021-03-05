@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "MyPaint"
+    }
+  },
+  "defaultProject": "MyPaint",
+  "cli": {
+    "analytics": false
+  }
 }

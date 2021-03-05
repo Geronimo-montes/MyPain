@@ -1,0 +1,25 @@
+<div class="col ml-4 mr-4 ">
+  <p class="mb-0">Herramientas</p>
+
+  <div class="row">
+    <li class="nav-item" (click)="_setButtonActive(0);"
+      [class.active]="buttonActive === 0">
+      <i class="nav-link fas fa-pen fa-2x"></i>
+    </li>
+    <li class="nav-item" (click)="_setButtonActive(1);"
+      [class.active]="buttonActive === 1">
+      <i class="nav-link fas fa-arrows-alt-h fa-2x"></i>
+    </li>
+  </div>
+
+  <div class="row">
+    <li class="nav-item" (click)="_setButtonActive(2);"
+      [class.active]="buttonActive === 2">
+      <i class="nav-link fas fa-eye-dropper fa-2x"></i>
+    </li>
+    <li class="nav-item" (click)="_setButtonActive(3);"
+      [class.active]="buttonActive === 3">
+      <i class="nav-link fas fa-paint-brush fa-2x"></i>
+    </li>
+  </div>
+</div>
