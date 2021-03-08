@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { buttonsNavbar } from 'src/app/model/buttonsNavbar.model';
-import { DibujarService } from 'src/app/services/dibujar.service';
+import { DibujarLineaService } from 'src/app/services/dibujar-linea.service';
 
 @Component({
   selector: 'app-lienzo',
@@ -13,7 +13,7 @@ export class LienzoComponent implements AfterViewInit {
   @ViewChild('canvas', { static: false }) canvas: any;
 
   constructor(
-    private servicioDibujar: DibujarService,
+    private servicioDibujar: DibujarLineaService,
   ) { }
 
   ngAfterViewInit() {

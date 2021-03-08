@@ -1,6 +1,6 @@
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { buttonsNavbar } from 'src/app/model/buttonsNavbar.model';
-import { DibujarService } from 'src/app/services/dibujar.service';
+import { DibujarLineaService } from 'src/app/services/dibujar-linea.service';
 
 @Component({
   selector: 'app-my-paint',
@@ -10,7 +10,7 @@ export class MyPaintComponent implements OnInit {
 
 
   constructor(
-    private servicioDibujar: DibujarService,
+    private servicioDibujar: DibujarLineaService,
   ) { }
 
   ngOnInit(): void {

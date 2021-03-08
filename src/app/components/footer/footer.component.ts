@@ -1,11 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Color, colores, interfaceButtonColor } from 'src/app/model/color.model';
-import { DibujarService } from 'src/app/services/dibujar.service';
+import { DibujarLineaService } from 'src/app/services/dibujar-linea.service';
 
 /**Valor minimo que se puede asignar al ancho del trazo */
 const minAncho: number = 1;
 /**Valor maximo que se puede asignar al ancho del trazo */
-const maxAncho: number = 30;
+const maxAncho: number = 5;
 
 @Component({
   selector: 'app-footer',
@@ -17,7 +17,7 @@ export class FooterComponent implements OnInit {
   @Input() width: number;
 
   constructor(
-    private servicioDibujar: DibujarService,
+    private servicioDibujar: DibujarLineaService,
   ) { }
 
   ngOnInit(): void {
