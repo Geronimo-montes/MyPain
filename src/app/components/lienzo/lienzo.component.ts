@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { buttonsNavbar } from 'src/app/model/buttonsNavbar.model';
-import { DibujarLineaService } from 'src/app/services/dibujar-linea.service';
+import { ParCoordenada } from 'src/app/model/capa.model';
+import { TipoTrazo } from "src/app/model/tipo-trazo.model";
+import { CapasService } from 'src/app/services/capas.service';
 
 @Component({
   selector: 'app-lienzo',
@@ -13,106 +14,84 @@ export class LienzoComponent implements AfterViewInit {
   @ViewChild('canvas', { static: false }) canvas: any;
 
   constructor(
-    private servicioDibujar: DibujarLineaService,
+    private servicioCapas: CapasService,
   ) { }
 
   ngAfterViewInit() {
-    this.servicioDibujar.render(this.canvas.nativeElement);
+    this.servicioCapas.render(this.canvas.nativeElement);
   }
 
-
+  /**Se da clic al mouse dentro del elemento */
   public oMouseDown(canvas: HTMLElement, $event) {
-    switch (this.buttonActive) {
-      case buttonsNavbar.linea:
-        if (!this.servicioDibujar.isDrawin) {
-          var bounds = canvas.getBoundingClientRect();
-          this.x = $event.clientX - bounds.left - this.margenError;
-          this.y = $event.clientY - bounds.top - this.margenError;
-          this.servicioDibujar.isAvailable = true;
-          this.servicioDibujar.isDrawin = true;
-        }
-        this.servicioDibujar.drawLine(this.x, this.y, this.fx, this.fy);
-        break;
-      case buttonsNavbar.lapiz:
+    if (!this.servicioCapas.isDrawin) {
+      var bounds = canvas.getBoundingClientRect();
+      this.puntoA.x = $event.clientX - bounds.left - this.margenError;
+      this.puntoA.y = $event.clientY - bounds.top - this.margenError;
+      this.servicioCapas.isDrawin = true;
+    } else {
 
-        break;
-      case buttonsNavbar.pincel:
-
-        break;
-      case buttonsNavbar.extractor:
-
-        break;
     }
+    /**Trazar capas */
+    this.dibujarTrazos();
   }
 
+  /** El cursor es movido dentro del elemento*/
   public oMouseMove(canvas: HTMLElement, $event) {
     /** Posicion del cursor */
     var bounds = canvas.getBoundingClientRect();
-    this.setWidth.emit($event.clientX - bounds.left);
-    this.setHeight.emit($event.clientY - bounds.top);
-
-    switch (this.buttonActive) {
-      case buttonsNavbar.linea:
-        /**Para dibujar la liena */
-        this.fx = $event.clientX - bounds.left - this.margenError;
-        this.fy = $event.clientY - bounds.top - this.margenError;
-
-        if (this.servicioDibujar.isDrawin)
-          this.servicioDibujar.drawLine(this.x, this.y, this.fx, this.fy);
-        break;
-      case buttonsNavbar.lapiz:
-
-        break;
-      case buttonsNavbar.pincel:
-
-        break;
-      case buttonsNavbar.extractor:
-        break;
-
-    }
+    this.setWidth.emit(~~($event.clientX - bounds.left));
+    this.setHeight.emit(~~($event.clientY - bounds.top));
+    /**Para dibujar la liena */
+    this.puntoB.x = $event.clientX - bounds.left - this.margenError;
+    this.puntoB.y = $event.clientY - bounds.top - this.margenError;
+    /**Trazar capas */
+    this.dibujarTrazos();
   }
 
+  /**El click de mouse es saltado */
   public oMouseUp(canvas: HTMLElement, $event) {
+    if (this.servicioCapas.isDrawin)
+      this.setPoint();
+  }
+
+  /**El mouse se mueve fuera del elemento */
+  public oMouseOver(canvas: HTMLElement, $event) {
+    if (this.servicioCapas.isDrawin)
+      this.setPoint();
+
+  }
+
+  /**Refactor. Metodo llamado oMouseDown y oMouseMove */
+  private dibujarTrazos() {
     switch (this.buttonActive) {
-      case buttonsNavbar.linea:
-        if (this.servicioDibujar.isAvailable && this.servicioDibujar.isDrawin) {
-          this.setPoint();
-          this.servicioDibujar.drawLine(this.x, this.y, this.fx, this.fy);
-        }
+      case TipoTrazo.linea:
+        if (this.servicioCapas.isDrawin)
+          this.servicioCapas.drawCapas(this.puntoA, this.puntoB);
         break;
-      case buttonsNavbar.lapiz:
-        console.log('lapiz');
+      case TipoTrazo.lapiz:
+
         break;
-      case buttonsNavbar.pincel:
-        console.log('pincel');
+      case TipoTrazo.pincel:
+
         break;
-      case buttonsNavbar.extractor:
-        console.log('chupador');
+      case TipoTrazo.extractor:
+
         break;
     }
-
   }
 
-  /**
-   * @description Setea un punto dentro del array de puntos y desactivas las banderas isDrawin
-   * isAvailable
-   */
   private setPoint() {
-    this.servicioDibujar.setNewPoint(this.x, this.y, this.fx, this.fy)
-
-    console.log(this.servicioDibujar._points);
-    this.servicioDibujar.isDrawin = false;
-    this.servicioDibujar.isAvailable = false;
+    this.servicioCapas.setNewPoint(this.puntoA, this.puntoB)
+    this.servicioCapas.isDrawin = false;
+    this.servicioCapas.drawCapas(this.puntoA, this.puntoB);
   }
 
-  get buttonActive(): buttonsNavbar {
-    return this.servicioDibujar.buttonActive;
+  get buttonActive(): TipoTrazo {
+    return this.servicioCapas.buttonActive;
   }
 
   private margenError = 15;
 
-  private x: number = 0;
-  private y: number = 0;
-  private fx: number = 0;
-  private fy: number = 0;
+  private puntoA: ParCoordenada = { x: 0, y: 0 };
+  private puntoB: ParCoordenada = { x: 0, y: 0 };
 }

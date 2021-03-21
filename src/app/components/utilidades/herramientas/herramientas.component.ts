@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { buttonsNavbar } from 'src/app/model/buttonsNavbar.model';
+import { TipoTrazo } from "src/app/model/tipo-trazo.model";
 
 @Component({
   selector: 'app-herramientas',
@@ -9,8 +9,8 @@ import { buttonsNavbar } from 'src/app/model/buttonsNavbar.model';
 })
 export class HerramientasComponent implements OnInit {
 
-  @Input() buttonActive: buttonsNavbar;
-  @Output() setButtonActive = new EventEmitter<buttonsNavbar>();
+  @Input() buttonActive: TipoTrazo;
+  @Output() setButtonActive = new EventEmitter<TipoTrazo>();
 
   constructor() { }
   ngOnInit(): void { }
@@ -21,7 +21,7 @@ export class HerramientasComponent implements OnInit {
    * @description Funcion que permite emitir un valor al componente padre (navbar)
    * con el valor del boton que lanzo la accion
    */
-  public _setButtonActive(valor: buttonsNavbar) {
+  public _setButtonActive(valor: TipoTrazo) {
     this.setButtonActive.emit(valor);
   }
 }

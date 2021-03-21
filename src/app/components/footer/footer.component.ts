@@ -1,6 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Color, colores, interfaceButtonColor } from 'src/app/model/color.model';
-import { DibujarLineaService } from 'src/app/services/dibujar-linea.service';
+import {
+  Color,
+  colores,
+  interfaceButtonColor,
+} from 'src/app/model/color.model';
+import { CapasService } from 'src/app/services/capas.service';
 
 /**Valor minimo que se puede asignar al ancho del trazo */
 const minAncho: number = 1;
@@ -12,31 +16,27 @@ const maxAncho: number = 5;
   templateUrl: './footer.component.html',
 })
 export class FooterComponent implements OnInit {
-
   @Input() height: number;
   @Input() width: number;
 
-  constructor(
-    private servicioDibujar: DibujarLineaService,
-  ) { }
+  constructor(private servicioCapas: CapasService) { }
 
-  ngOnInit(): void {
-  }
-
-  public setColorTrazo(color: Color) {
-    this.servicioDibujar.colorTrazo = color;
-  }
-
-  public setAnchoTrazo(valor: string) {
-    this.servicioDibujar.anchoTrazo = +valor;
-  }
+  ngOnInit(): void { }
 
   get colorActivo(): Color {
-    return this.servicioDibujar.colorTrazo;
+    return this.servicioCapas.colorTrazo;
+  }
+
+  set colorActivo(color: Color) {
+    this.servicioCapas.colorTrazo = color;
   }
 
   get anchoTrazo(): number {
-    return this.servicioDibujar.anchoTrazo;
+    return this.servicioCapas.anchoTrazo;
+  }
+
+  set anchoTrazo(valor: number) {
+    this.servicioCapas.anchoTrazo = valor;
   }
 
   get colores(): interfaceButtonColor[] {

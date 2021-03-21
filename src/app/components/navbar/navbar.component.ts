@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { buttonsNavbar } from 'src/app/model/buttonsNavbar.model';
-import { DibujarLineaService } from 'src/app/services/dibujar-linea.service';
+import { Component, OnInit } from '@angular/core';
+import { TipoTrazo } from "src/app/model/tipo-trazo.model";
+import { CapasService } from 'src/app/services/capas.service';
 
 @Component({
   selector: 'app-navbar',
@@ -12,17 +12,17 @@ export class NavbarComponent implements OnInit {
 
 
   constructor(
-    private servicioDibujar: DibujarLineaService,
+    private servicioCapas: CapasService,
   ) { }
 
   ngOnInit(): void {
   }
 
-  public setbuttonActive(valor: buttonsNavbar) {
-    this.servicioDibujar.buttonActive = valor;
+  public setbuttonActive(valor: TipoTrazo) {
+    this.servicioCapas.buttonActive = valor;
   }
 
-  get buttonActive(): buttonsNavbar {
-    return this.servicioDibujar.buttonActive;
+  get buttonActive(): TipoTrazo {
+    return this.servicioCapas.buttonActive;
   }
 }

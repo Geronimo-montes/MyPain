@@ -10,6 +10,7 @@ import { HerramientasComponent } from './components/utilidades/herramientas/herr
 import { OpcionesComponent } from './components/utilidades/opciones/opciones.component';
 import { FigurasComponent } from './components/utilidades/figuras/figuras.component';
 import { LienzoComponent } from './components/lienzo/lienzo.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { LienzoComponent } from './components/lienzo/lienzo.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
