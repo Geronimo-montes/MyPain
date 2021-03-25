@@ -7,8 +7,9 @@ import { Color } from "./color.model";
  * selected: boolean puntos: paresCoordenadas[]
  */
 export interface Capa {
-  PuntoA: ParCoordenada,
-  PuntoB: ParCoordenada,
+  puntoA: ParCoordenada,
+  puntoB: ParCoordenada,
+  vertices: ParCoordenada[], //pendiente
   tipoTrazo: TipoTrazo,
   colorTrazo: Color,
   anchoTrazo: number,

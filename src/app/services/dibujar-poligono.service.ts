@@ -16,18 +16,18 @@ export class DibujarPoligonoService {
       puntos: ParCoordenada[] = [],
       centro: ParCoordenada = puntoA,
       radio = Math.sqrt(Math.pow(puntoB.x - puntoA.x, 2) + Math.pow(puntoB.y - puntoA.y, 2)),
-      radianes = (2 * Math.PI) / numeroLados,
+      radian = (2 * Math.PI) / numeroLados,
 
       verticeA: ParCoordenada = {
-        x: centro.x + radio * Math.cos(radianes * 0),
-        y: centro.y + radio * Math.sin(radianes * 0),
+        x: centro.x + radio * Math.cos(radian * 0),
+        y: centro.y + radio * Math.sin(radian * 0),
       },
       verticeB: ParCoordenada;
 
     for (let i = 1; i < numeroLados + 1; i++) {
       verticeB = {
-        x: ~~(0.5 + centro.x + radio * Math.cos(radianes * i)),
-        y: ~~(0.5 + centro.y + radio * Math.sin(radianes * i)),
+        x: ~~(0.5 + centro.x + radio * Math.cos(radian * i)),
+        y: ~~(0.5 + centro.y + radio * Math.sin(radian * i)),
       };
 
       this.dibujarLinea.bresenhamLine(verticeA, verticeB, factorReduce)

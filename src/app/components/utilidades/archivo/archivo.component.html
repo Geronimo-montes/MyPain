@@ -2,31 +2,26 @@
   <p class="mb-0">Archivo</p>
   <div class="col">
     <div class="row">
-      <button class="btn btn-outline-secondary m-1"
-        (click)="_setButtonActive(0);" [class.active]="buttonActive === 0">
-        <i class="h1 fas fa-folder-open fa-5x"> </i>
+      <button class="btn btn-outline-secondary m-1">
+        <i class="h3 text-warning fas fa-folder-open fa-5x"> </i>
       </button>
       <div class="col">
         <div class="row">
-          <button class="btn btn-outline-secondary col m-1"
-            (click)="_setButtonActive(1);" [class.active]="buttonActive === 1">
-            <i class="h4 fas fa-save mt-1"></i>
+          <button class="btn btn-outline-secondary col m-1">
+            <i class="h5 text-white fas fa-save mt-1"></i>
           </button>
-          <button class="btn btn-outline-secondary col m-1"
-            (click)="_setButtonActive(2);" [class.active]="buttonActive === 2">
-            <i class="h4 fas fa-image mt-1"></i>
+          <button class="btn btn-outline-secondary col m-1">
+            <i class="h5 text-white fas fa-image mt-1"></i>
           </button>
         </div>
         <div class="row">
-          <button class="btn btn-outline-secondary col m-1"
-            (click)="_setButtonActive(3);" [class.active]="buttonActive === 3">
+          <button class="btn btn-outline-secondary col m-1">
 
-            <i class="h4 fas fa-arrow-alt-circle-left mt-1"></i>
+            <i class="h3 icon-undo mt-1"></i>
           </button>
-          <button class="btn btn-outline-secondary col m-1"
-            (click)="_setButtonActive(4);" [class.active]="buttonActive === 4">
+          <button class="btn btn-outline-secondary col m-1">
 
-            <i class="h4 fas fa-arrow-alt-circle-right mt-1"></i>
+            <i class="h3 icon-redo mt-1"></i>
           </button>
         </div>
       </div>

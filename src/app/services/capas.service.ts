@@ -34,26 +34,32 @@ export class CapasService {
 
   /**
    * @name setNewCapa
-   * @description Agrega la capa al array de capas
+   * @description genera una nueva capa para el trazo que se esta realizando
    */
   public setNewCapa(puntoA: ParCoordenada, puntoB: ParCoordenada) {
+    if (!this.validDimesionesCavas(puntoA) || !this.validDimesionesCavas(puntoB)) return;
     /**como se esta realizando un trazo, ninguna capa esta seleccionada */
     this.capas.forEach((capa: Capa) => { capa.selected = false; });
     /**Datos del trazo que se esta realizando */
     let capa = {
       index: this.index,
-      PuntoA: puntoA,
-      PuntoB: puntoB,
+      puntoA: puntoA,
+      puntoB: puntoB,
+      vertices: [],
       tipoTrazo: this.buttonActive,
       colorTrazo: this.colorTrazo,
       anchoTrazo: this.anchoTrazo,
-      puntos: this.tipoTrazo(puntoA, puntoB, this.buttonActive),
+      puntos: [],
       selected: true
     };
 
     this.capas.push(capa);
     this.indexSelected = this.index;
+    /**Inicialmente se seteaba el valor de puntos dentrode la cracion de la variable, para 
+     * evitar que tome valores de otras capas lo agregamos al array y mandamos calcular los puntos*/
+    this.capas[this.indexSelected].puntos = this.tipoTrazo(puntoA, puntoB, this.buttonActive);
     this.isSelected = true;
+    this.isDrawin = true;
     this.index++;
     this.trazarCapas();
   }
@@ -66,17 +72,19 @@ export class CapasService {
    * mouse
    */
   public setCapa(puntoA: ParCoordenada, puntoB: ParCoordenada) {
+    if (!this.validDimesionesCavas(puntoA) || !this.validDimesionesCavas(puntoB)) return;
     /**Cuando el usuario esta realizando un trazo nuevo */
     if (this.isDrawin) {
       /**Datos del trazo que se esta realizando */
       let capa = {
         index: this.capas[this.indexSelected].index,
-        PuntoA: puntoA,
-        PuntoB: puntoB,
+        puntoA: puntoA,
+        puntoB: puntoB,
+        vertices: [],
         tipoTrazo: this.buttonActive,
         colorTrazo: this.colorTrazo,
         anchoTrazo: this.anchoTrazo,
-        puntos: this.tipoTrazo(puntoA, puntoB, this.buttonActive),
+        puntos: this.tipoTrazo(puntoA, puntoB, this.capas[this.indexSelected].tipoTrazo),
         selected: true
       };
 
@@ -92,16 +100,18 @@ export class CapasService {
    * para los puntos A y B de la capa, ademas se recalcula el valores de los putnos de dicho trazo
    */
   setCapaResize(punto: ParCoordenada) {
+    if (!this.validDimesionesCavas(punto)) return;
     //Una capa tiene que estar seleccionada para poder realizar el redimesionado
     if (this.isSelected) {
+      if (this.capas[this.indexSelected].tipoTrazo == TipoTrazo.lapiz) return;
       if (this.isResizeA) //isResizeA indica se se a seleccionado el puntoA de la capa
-        this.capas[this.indexSelected].PuntoA = punto;
+        this.capas[this.indexSelected].puntoA = punto;
       else if (this.isResizeB)//isResizeA indica se se a seleccionado el puntoB de la capa
-        this.capas[this.indexSelected].PuntoB = punto;
+        this.capas[this.indexSelected].puntoB = punto;
 
       this.capas[this.indexSelected].puntos = this.tipoTrazo(
-        this.capas[this.indexSelected].PuntoA,
-        this.capas[this.indexSelected].PuntoB,
+        this.capas[this.indexSelected].puntoA,
+        this.capas[this.indexSelected].puntoB,
         this.capas[this.indexSelected].tipoTrazo
       );
       this.trazarCapas();
@@ -114,6 +124,7 @@ export class CapasService {
    * @description Verifica si el lugar donde se dio clic corresponde al trazo de una capa
    */
   public seleccionarCapa(punto: ParCoordenada) {
+    if (!this.validDimesionesCavas(punto)) return;
     /**ninguna capa seleccionada */
     this.capas.map((capa: Capa) => capa.selected = false);
     /**Antes de buscar el punto invertimos el array */
@@ -152,6 +163,7 @@ export class CapasService {
    * @returns true: si se ha modificado algun valor de control (isResizeA ó isResizeB)
    */
   public seleccionarPuntoCapa(punto: ParCoordenada): boolean {
+    if (!this.validDimesionesCavas(punto)) return;
     const
       capa = this.capas[this.indexSelected],
       ancho = ~~(0.5 + capa.anchoTrazo / 2),
@@ -165,11 +177,11 @@ export class CapasService {
     //si de un cuadrado se tratase
     for (let x = xInint; x <= xFin; x++)
       for (let y = yInint; y <= yFin; y++)
-        if (capa.PuntoA.x === x && capa.PuntoA.y === y) {
+        if (capa.puntoA.x === x && capa.puntoA.y === y) {
           this.isResizeA = true;
           this.isResizeB = false;
           return true;
-        } else if (capa.PuntoB.x === x && capa.PuntoB.y === y) {
+        } else if (capa.puntoB.x === x && capa.puntoB.y === y) {
           this.isResizeA = false;
           this.isResizeB = true;
           return true;
@@ -177,14 +189,35 @@ export class CapasService {
     return false;
   }
 
+  public seleccionarPuntoTrazo(punto: ParCoordenada): boolean {
+    if (!this.validDimesionesCavas(punto)) return;
+    const
+      ancho = ~~(0.5 + this.capas[this.indexSelected].anchoTrazo / 2),
+      xInint = punto.x - ancho,
+      xFin = punto.x + ancho,
+      yInint = punto.y - ancho,
+      yFin = punto.y + ancho;
+    this.isDrawin = false;
+    this.capas[this.indexSelected].puntos.every((punto: ParCoordenada) => {
+      for (let x = xInint; x <= xFin; x++)
+        for (let y = yInint; y <= yFin; y++)
+          if (punto.x === x && punto.y === y) {
+            console.log('true');
+            this.isMove = true;
+            return false;
+          }
+      return true;
+    });
+  }
+
   /**
    * @name moverCapa
-   * @param posicion Posicion a la que se va a mover la capa 
+   * @param tipoTrazo Posicion a la que se va a mover la capa 
    * @description posiciona la capa en una nueva posicion: Al frente, al fondo, una capa al frente, una capa atras
    */
-  public moverCapa(posicion: TipoTrazo): void {
+  public moverCapa(tipoTrazo: TipoTrazo): void {
     var capaMover = this.capas[this.indexSelected];
-    switch (posicion) {
+    switch (tipoTrazo) {
       case TipoTrazo.movarUnaCapaAdelante:
         if (this.indexSelected < this.capas.length - 1) {
           this.capas[this.indexSelected] = this.capas[this.indexSelected + 1];
@@ -223,6 +256,34 @@ export class CapasService {
     this.trazarCapas();
   }
 
+  public moverTrazo(puntoA: ParCoordenada, puntoB: ParCoordenada): ParCoordenada {
+    if (!this.validDimesionesCavas(puntoA) || !this.validDimesionesCavas(puntoB)) return;
+    //puntoA: origen, puntoB: destino
+    const
+      desplazamientoX: number = puntoB.x - puntoA.x,
+      desplazamientoY: number = puntoB.y - puntoA.y;
+    console.log({ puntoA }, { puntoB });
+    this.capas[this.indexSelected].puntoA.x += desplazamientoX;
+    this.capas[this.indexSelected].puntoA.y += desplazamientoY;
+    this.capas[this.indexSelected].puntoB.x += desplazamientoX;
+    this.capas[this.indexSelected].puntoB.y += desplazamientoY;
+    //¿Que sera mejor? ¿Recalcular puntos? ¿Realizar calculo por cada punto del array?
+    this.capas[this.indexSelected].puntos.forEach((punto: ParCoordenada) => {
+      punto.x += desplazamientoX;
+      punto.y += desplazamientoY;
+    });
+
+    // this.capas[this.indexSelected].puntos = this.tipoTrazo(
+    //   this.capas[this.indexSelected].puntoA,
+    //   this.capas[this.indexSelected].puntoB,
+    //   this.capas[this.indexSelected].tipoTrazo
+    // );
+
+
+    this.trazarCapas();
+    return puntoB;
+  }
+
   /**
    * @name trazarCapas
    * @description Recorre los pares de coordenadas y traza un punto por cada uno
@@ -246,12 +307,12 @@ export class CapasService {
         this.cx.fillStyle = Color.White;
         this.cx.strokeStyle = Color.Black;
         this.cx.beginPath();
-        this.cx.arc(capa.PuntoA.x, capa.PuntoA.y, 3, 0, 360);
+        this.cx.arc(capa.puntoA.x, capa.puntoA.y, 3, 0, 360);
         this.cx.closePath();
         this.cx.stroke();
         this.cx.fill();
         this.cx.beginPath();
-        this.cx.arc(capa.PuntoB.x, capa.PuntoB.y, 3, 0, 360);
+        this.cx.arc(capa.puntoB.x, capa.puntoB.y, 3, 0, 360);
         this.cx.closePath();
         this.cx.stroke();
         this.cx.fill();
@@ -270,8 +331,7 @@ export class CapasService {
         return this.dibujarLinea.bresenhamLine(puntoA, puntoB, this.anchoTrazo);
 
       case TipoTrazo.lapiz:
-        let puntos = (this.capaActiva === null) ? [] : this.capaActiva.puntos;
-        return this.dibujarLapiz.lapiz(puntoB, puntos, this.anchoTrazo);
+        return this.dibujarLapiz.lapiz(puntoB, this.capas[this.indexSelected].puntos, this.anchoTrazo);
 
       case TipoTrazo.circulo:
         return this.dibujarCirculo.circulo(puntoA, puntoB, this.anchoTrazo);
@@ -308,50 +368,70 @@ export class CapasService {
   public get colorTrazo(): Color {
     return this._colorTrazo;
   }
-
   public set colorTrazo(value: Color) {
     //seteamos el valor indicado
     this._colorTrazo = value;
     //si hay elemento seleccionado le seteamos el valor a la capa
     if (this.isSelected) {
       this.capas[this.indexSelected].colorTrazo = value;
-      /**Iniciolizamos el contenedor */
-      this.cx.fillStyle = 'white';
-      this.cx.fillRect(0, 0, this.width, this.height);
       this.trazarCapas();
     }
   }
-
   public get anchoTrazo(): number {
     return this._anchoTrazo;
   }
-
   public set anchoTrazo(value: number) {
     //seteamos el calor del ancho del trazo
     this._anchoTrazo = value;
     //si esta seleecionado un trazo modificamos se valor
     if (this.isSelected) {
       this.capas[this.indexSelected].anchoTrazo = value;
-      /**Iniciolizamos el contenedor */
-      this.cx.fillStyle = 'white';
-      this.cx.fillRect(0, 0, this.width, this.height);
+      this.capas[this.indexSelected].puntos = this.tipoTrazo(
+        this.capas[this.indexSelected].puntoA,
+        this.capas[this.indexSelected].puntoB,
+        this.capas[this.indexSelected].tipoTrazo,
+      );
       this.trazarCapas();
     }
   }
+  public get isDrawin(): boolean {
+    return this._isDrawin;
+  }
+  public set isDrawin(value: boolean) {
+    if (value) {
+      this.isResizeA = false;
+      this.isResizeB = false;
+      this.isMove = false;
+    }
+    this._isDrawin = value;
+  }
+
+  /**
+   * @validDimensioneCavas
+   * @param punto 
+   * @returns true para las dimensiones dentro del cavas
+   */
+  private validDimesionesCavas(punto: ParCoordenada): boolean {
+    let margin = 10;
+    return (punto.x > 0 + margin && punto.x < this.width - margin &&
+      punto.y > 0 + margin && punto.y < this.height - margin);
+  }
 
   /** ¿Dibujando? */
-  public isDrawin: boolean = false;
+  private _isDrawin: boolean = false;
   /** ¿Trazo Seleccionado? */
   public isSelected: boolean = false;
   /** ¿Redimensionanado */
   public isResizeA: boolean = false;
   public isResizeB: boolean = false;
+  /** ¿Moviendo capa? */
+  public isMove: boolean = false;
   /** button active */
   public buttonActive: TipoTrazo = TipoTrazo.linea;
   /**Lienzo para dibujar*/
   private cx: CanvasRenderingContext2D;
   /** Dimensiones del cavas */
-  private width = 1000;
+  private width = 1600;
   /** Dimensiones del cavas */
   private height = 650;
   /** Array de puntos dibujados */
@@ -360,8 +440,7 @@ export class CapasService {
   private index = 0;
   /**index de la capa selecionada */
   private indexSelected: number = -1;
-  /** Capa que se esta trazado en el evento click del moue*/
-  private capaActiva: Capa = null;
+
   /** Color del trazo */
   private _colorTrazo: Color = Color.Black;
   /** Ancho trazo */
