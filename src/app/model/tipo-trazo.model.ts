@@ -5,7 +5,7 @@ export enum TipoTrazo {
   atrasTrazo = 3,
   adelanteTrazo = 4,
   seleccionar = 5,
-  aumentarTamaño = 6,
+  redimensionar = 6,
   disminuirTamaño = 7,
   rotarIzq = 8,
   rotarDer = 9,

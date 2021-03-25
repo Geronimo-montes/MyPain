@@ -26,8 +26,8 @@ export class DibujarPoligonoService {
 
     for (let i = 1; i < numeroLados + 1; i++) {
       verticeB = {
-        x: Math.abs(centro.x + radio * Math.cos(radianes * i)),
-        y: Math.abs(centro.y + radio * Math.sin(radianes * i)),
+        x: ~~(0.5 + centro.x + radio * Math.cos(radianes * i)),
+        y: ~~(0.5 + centro.y + radio * Math.sin(radianes * i)),
       };
 
       this.dibujarLinea.bresenhamLine(verticeA, verticeB, factorReduce)
