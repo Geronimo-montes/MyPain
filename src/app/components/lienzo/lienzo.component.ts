@@ -43,12 +43,22 @@ export class LienzoComponent implements AfterViewInit {
         case TipoTrazo.poligono:
         case TipoTrazo.triangulo:
           this.servicioCapas.isDrawin = true;
-          this.servicioCapas.drawCapas(this.puntoA, this.puntoA);
+          this.servicioCapas.setNewCapa(this.puntoA, this.puntoA);
           break;
 
         case TipoTrazo.seleccionar:
           this.servicioCapas.seleccionarCapa(this.puntoA);
           break;
+
+        case TipoTrazo.redimensionar:
+          if (this.servicioCapas.isSelected) {
+            if (!this.servicioCapas.seleccionarPuntoCapa(this.puntoA))
+              this.servicioCapas.seleccionarCapa(this.puntoA);
+          } else {
+            this.servicioCapas.seleccionarCapa(this.puntoA);
+          }
+          break;
+
       }
     }
   }
@@ -77,28 +87,57 @@ export class LienzoComponent implements AfterViewInit {
       case TipoTrazo.octagono:
       case TipoTrazo.poligono:
       case TipoTrazo.triangulo:
-        this.servicioCapas.drawCapas(this.puntoA, this.puntoB);
+        if (this.servicioCapas.isDrawin)
+          this.servicioCapas.setCapa(this.puntoA, this.puntoB);
+        break;
+
+      case TipoTrazo.redimensionar:
+        if (this.servicioCapas.isSelected && (this.servicioCapas.isResizeA || this.servicioCapas.isResizeB)) {
+          this.servicioCapas.setCapaResize(this.puntoB);
+        }
+
         break;
     }
   }
 
   /**El click de mouse es saltado */
   public oMouseUp(canvas: HTMLElement, $event) {
-    if (this.servicioCapas.isDrawin && this.buttonActive !== TipoTrazo.seleccionar)
-      this.setCapa();
+    switch (this.buttonActive) {
+      case TipoTrazo.linea:
+      case TipoTrazo.lapiz:
+      case TipoTrazo.circulo:
+      case TipoTrazo.elipse:
+      case TipoTrazo.cuadrado:
+      case TipoTrazo.rectangulo:
+      case TipoTrazo.pentagono:
+      case TipoTrazo.hexagono:
+      case TipoTrazo.octagono:
+      case TipoTrazo.poligono:
+      case TipoTrazo.triangulo:
+        if (this.servicioCapas.isDrawin) {
+          this.servicioCapas.isDrawin = false;
+          this.servicioCapas.setCapa(this.puntoA, this.puntoB);
+        }
+        break;
+
+      case TipoTrazo.redimensionar:
+        if (this.servicioCapas.isSelected && (this.servicioCapas.isResizeA || this.servicioCapas.isResizeB)) {
+          this.servicioCapas.setCapaResize(this.puntoB);
+          /**Cuando se suelta el clic del se acaba el evento de redimensionar*/
+          this.servicioCapas.isResizeA = false;
+          this.servicioCapas.isResizeB = false;
+        }
+
+        break;
+    }
   }
 
   /**El mouse se mueve fuera del elemento */
   public oMouseOver(canvas: HTMLElement, $event) {
-    if (this.servicioCapas.isDrawin && this.buttonActive !== TipoTrazo.seleccionar)
-      this.setCapa();
-
-  }
-
-  private setCapa() {
-    this.servicioCapas.setNewCapa();
-    this.servicioCapas.isDrawin = false;
-    this.servicioCapas.drawCapas(this.puntoA, this.puntoB);
+    if (this.servicioCapas.isDrawin) {
+      this.servicioCapas.isDrawin = false;
+      this.servicioCapas.setCapa(this.puntoA, this.puntoB);
+    }
   }
 
   get buttonActive(): TipoTrazo {
