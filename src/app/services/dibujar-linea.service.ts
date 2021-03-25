@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Capa, ParCoordenada } from '../model/capa.model';
-import { Color } from '../model/color.model';
 
 enum signo {
   negativo = -1,
@@ -16,8 +15,19 @@ enum signo {
 export class DibujarLineaService {
   constructor() { }
 
-  public bresenhamLine(capa: Capa, cx: CanvasRenderingContext2D): ParCoordenada[] {
-    return this.identificarCuadrante(capa, cx);
+  /**
+   * @name bresenhamLine
+   * @param puntoA Coordenada inicial
+   * @param puntoB Coordenada final
+   * @param factorReduce Factor para la reducion de puntos a trazar
+   * @returns Array de puntos correspondiente a la linea
+   */
+  public bresenhamLine(puntoA: ParCoordenada, puntoB: ParCoordenada, factorReduce: number): ParCoordenada[] {
+    return this.identificarCuadrante(puntoA, puntoB)
+      .filter((_punto, index) => {
+        let factor = ((factorReduce - 2) <= 1) ? 2 : (factorReduce - 2);
+        return index % factor === 0;
+      });
   }
 
   /**
@@ -27,37 +37,36 @@ export class DibujarLineaService {
    * @param cx Lienzo donde se realizaran los trazos
    * @returns Array de coordenadas
    */
-  private identificarCuadrante(capa: Capa, cx: CanvasRenderingContext2D): ParCoordenada[] {
+  private identificarCuadrante(puntoA: ParCoordenada, puntoB: ParCoordenada): ParCoordenada[] {
     var
-      dx = ~~(Math.abs(capa.PuntoB.x - capa.PuntoA.x)),
-      dy = ~~(Math.abs(capa.PuntoB.y - capa.PuntoA.y)),
-      x = capa.PuntoA.x,
-      y = capa.PuntoA.y,
+      dx = ~~(Math.abs(puntoB.x - puntoA.x)),
+      dy = ~~(Math.abs(puntoB.y - puntoA.y)),
+      x = puntoA.x,
+      y = puntoA.y,
       e = ~~(2 * dy - dx); //Distancia entre la linea ideal que se desea trazar y el pixel que queda mas cerc,
     const
       e1 = ~~(dx > dy ? 2 * dy : 2 * dx),
       e2 = ~~(dx > dy ? 2 * (dy - dx) : 2 * (dx - dy)),
-      m = dx === 0 || dy === 0 ? 0 : (capa.PuntoB.y - capa.PuntoA.y) / (capa.PuntoB.x - capa.PuntoA.x);
-
+      m = dx === 0 || dy === 0 ? 0 : (puntoB.y - puntoA.y) / (puntoB.x - puntoA.x);
 
     if (m >= 0)
-      if (capa.PuntoA.x >= capa.PuntoB.x && capa.PuntoA.y >= capa.PuntoB.y)
+      if (puntoA.x >= puntoB.x && puntoA.y >= puntoB.y)
         /**Cuadrante 2 */
-        return this.calcularPuntosLinea(x, y, dx, dy, e, e1, e2, signo.negativo, signo.negativo, cx);
+        return this.calcularPuntosLinea(x, y, dx, dy, e, e1, e2, signo.negativo, signo.negativo);
       else
         /**Cuadrante 4 */
-        return this.calcularPuntosLinea(x, y, dx, dy, e, e1, e2, signo.positivo, signo.positivo, cx);
+        return this.calcularPuntosLinea(x, y, dx, dy, e, e1, e2, signo.positivo, signo.positivo);
     else if (m < 0)
-      if (capa.PuntoA.x >= capa.PuntoB.x && capa.PuntoA.y <= capa.PuntoB.y)
+      if (puntoA.x >= puntoB.x && puntoA.y <= puntoB.y)
         /** Cuadrante 3 */
-        return this.calcularPuntosLinea(x, y, dx, dy, e, e1, e2, signo.negativo, signo.positivo, cx);
+        return this.calcularPuntosLinea(x, y, dx, dy, e, e1, e2, signo.negativo, signo.positivo);
       else
         /** Cuadrante 1 */
-        return this.calcularPuntosLinea(x, y, dx, dy, e, e1, e2, signo.positivo, signo.negativo, cx);
+        return this.calcularPuntosLinea(x, y, dx, dy, e, e1, e2, signo.positivo, signo.negativo);
   }
 
   /**
-   * @name bresenhamLine
+   * @name calcularPuntosLinea
    * @description Algoritmo de bresenham para el trazado de lieneas
    * @param x Representa la x en el par de coordenadas (x,y)
    * @param y Representa la y en el par de coordenadas (x,y)
@@ -72,14 +81,12 @@ export class DibujarLineaService {
    * @returns Array de coordenadas coloreadas
    */
   private calcularPuntosLinea(x: number, y: number, dx: number, dy: number, e: number, e1: number,
-    e2: number, signoX: signo, signoY: signo, cx: CanvasRenderingContext2D
+    e2: number, signoX: signo, signoY: signo
   ): ParCoordenada[] {
     const puntos: ParCoordenada[] = [];
     if (dx > dy) {
       for (let i = 0; i < dx; i++) {
-        //Puseamos la coordenada
         puntos.push({ x: x, y: y });
-        //Coloreamos el pixel
         x += (1 * signoX);
         if (e < 0) {
           e += e1;
@@ -90,9 +97,7 @@ export class DibujarLineaService {
       }
     } else {
       for (let i = 0; i < dy; i++) {
-        //Puseamos la coordenada
         puntos.push({ x: x, y: y });
-        //Coloreamos el pixel
         y += (1 * signoY);
         if (e < 0) {
           e += e1;

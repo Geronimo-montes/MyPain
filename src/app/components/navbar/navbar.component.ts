@@ -15,8 +15,7 @@ export class NavbarComponent implements OnInit {
     private servicioCapas: CapasService,
   ) { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
   public setbuttonActive(valor: TipoTrazo) {
     this.servicioCapas.buttonActive = valor;

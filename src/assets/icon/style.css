@@ -1,0 +1,112 @@
+@font-face {
+  font-family: 'MyPaintIcon';
+  src:  url('fonts/MyPaintIcon.eot?t8kud6');
+  src:  url('fonts/MyPaintIcon.eot?t8kud6#iefix') format('embedded-opentype'),
+    url('fonts/MyPaintIcon.ttf?t8kud6') format('truetype'),
+    url('fonts/MyPaintIcon.woff?t8kud6') format('woff'),
+    url('fonts/MyPaintIcon.svg?t8kud6#MyPaintIcon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'MyPaintIcon' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-cursor:before {
+  content: "\e912";
+}
+.icon-flip_horizontal:before {
+  content: "\e914";
+}
+.icon-flip_vertical:before {
+  content: "\e915";
+}
+.icon-no_rotate_left:before {
+  content: "\e916";
+}
+.icon-resize:before {
+  content: "\e917";
+}
+.icon-resize_file:before {
+  content: "\e918";
+}
+.icon-bring_to_front:before {
+  content: "\e900";
+}
+.icon-circle:before {
+  content: "\e901";
+  color: #00acc1;
+}
+.icon-front_sorting:before {
+  content: "\e902";
+}
+.icon-hexagon:before {
+  content: "\e903";
+  color: #00acc1;
+}
+.icon-line:before {
+  content: "\e904";
+  color: #00acc1;
+}
+.icon-octagon:before {
+  content: "\e905";
+  color: #00acc1;
+}
+.icon-oval:before {
+  content: "\e906";
+  color: #00acc1;
+}
+.icon-pentagon:before {
+  content: "\e907";
+  color: #00acc1;
+}
+.icon-polygon:before {
+  content: "\e908";
+  color: #00acc1;
+}
+.icon-rectangular:before {
+  content: "\e909";
+  color: #00acc1;
+}
+.icon-redo:before {
+  content: "\e90a";
+  color: #00bcd4;
+}
+.icon-rhombus:before {
+  content: "\e90b";
+  color: #00acc1;
+}
+.icon-send_backward:before {
+  content: "\e90c";
+}
+.icon-send_to_back:before {
+  content: "\e90d";
+}
+.icon-transfer:before {
+  content: "\e90e";
+}
+.icon-triangle:before {
+  content: "\e90f";
+  color: #00acc1;
+}
+.icon-undo:before {
+  content: "\e910";
+  color: #00bcd4;
+}
+.icon-verticalLine:before {
+  content: "\e911";
+  color: #00acc1;
+}

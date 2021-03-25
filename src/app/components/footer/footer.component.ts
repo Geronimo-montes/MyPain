@@ -7,9 +7,9 @@ import {
 import { CapasService } from 'src/app/services/capas.service';
 
 /**Valor minimo que se puede asignar al ancho del trazo */
-const minAncho: number = 1;
+const minAncho: number = 2;
 /**Valor maximo que se puede asignar al ancho del trazo */
-const maxAncho: number = 5;
+const maxAncho: number = 6;
 
 @Component({
   selector: 'app-footer',

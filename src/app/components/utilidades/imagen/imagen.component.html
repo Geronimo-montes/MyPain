@@ -1,0 +1,29 @@
+<li class="nav-item text-center ml-5">
+  <p class="mb-0">Imagen</p>
+  <div class="col">
+    <div class="row">
+      <button class="btn btn-outline-secondary col m-1"
+        (click)="_setButtonActive(5);" [class.active]="buttonActive === 5">
+        <i class="h2 text-primary icon-cursor mt-1"></i>
+      </button>
+      <button class="btn btn-outline-secondary col m-1"
+        (click)="_setButtonActive(6);" [class.active]="buttonActive === 6">
+        <i class="h2 text-primary icon-resize mt-1"></i>
+      </button>
+      <button class="btn btn-outline-secondary col m-1"
+        (click)="_setButtonActive(7);" [class.active]="buttonActive === 7">
+        <i class="h2 text-primary icon-resize_file mt-1"></i>
+      </button>
+    </div>
+    <div class="row">
+      <button class="btn btn-outline-secondary col m-1"
+        (click)="_setButtonActive(8);" [class.active]="buttonActive === 8">
+        <i class="h2 text-primary icon-flip_horizontal mt-1"></i>
+      </button>
+      <button class="btn btn-outline-secondary col m-1"
+        (click)="_setButtonActive(9);" [class.active]="buttonActive === 9">
+        <i class="h2 text-primary icon-flip_vertical mt-1"></i>
+      </button>
+    </div>
+  </div>
+</li>

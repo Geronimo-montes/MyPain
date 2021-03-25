@@ -12,7 +12,9 @@ export interface Capa {
   tipoTrazo: TipoTrazo,
   colorTrazo: Color,
   anchoTrazo: number,
-  puntos: ParCoordenada[]
+  puntos: ParCoordenada[],
+  selected: boolean,
+  index: number
 }
 
 /**

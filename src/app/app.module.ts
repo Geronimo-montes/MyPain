@@ -11,6 +11,10 @@ import { OpcionesComponent } from './components/utilidades/opciones/opciones.com
 import { FigurasComponent } from './components/utilidades/figuras/figuras.component';
 import { LienzoComponent } from './components/lienzo/lienzo.component';
 import { FormsModule } from '@angular/forms';
+import { ArchivoComponent } from './components/utilidades/archivo/archivo.component';
+import { CapaComponent } from './components/utilidades/capa/capa.component';
+import { ImagenComponent } from './components/utilidades/imagen/imagen.component';
+import { SombraComponent } from './components/utilidades/sombra/sombra.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +26,10 @@ import { FormsModule } from '@angular/forms';
     OpcionesComponent,
     FigurasComponent,
     LienzoComponent,
+    ArchivoComponent,
+    CapaComponent,
+    ImagenComponent,
+    SombraComponent,
   ],
   imports: [
     BrowserModule,

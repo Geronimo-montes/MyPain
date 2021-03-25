@@ -25,14 +25,32 @@ export class LienzoComponent implements AfterViewInit {
   public oMouseDown(canvas: HTMLElement, $event) {
     if (!this.servicioCapas.isDrawin) {
       var bounds = canvas.getBoundingClientRect();
-      this.puntoA.x = $event.clientX - bounds.left - this.margenError;
-      this.puntoA.y = $event.clientY - bounds.top - this.margenError;
-      this.servicioCapas.isDrawin = true;
-    } else {
+      this.puntoA = {
+        x: ~~(0.5 + ($event.clientX - bounds.left - this.margenError)),
+        y: ~~(0.5 + ($event.clientY - bounds.top - this.margenError))
+      };
 
+      switch (this.buttonActive) {
+        case TipoTrazo.linea:
+        case TipoTrazo.lapiz:
+        case TipoTrazo.circulo:
+        case TipoTrazo.elipse:
+        case TipoTrazo.cuadrado:
+        case TipoTrazo.rectangulo:
+        case TipoTrazo.pentagono:
+        case TipoTrazo.hexagono:
+        case TipoTrazo.octagono:
+        case TipoTrazo.poligono:
+        case TipoTrazo.triangulo:
+          this.servicioCapas.isDrawin = true;
+          this.servicioCapas.drawCapas(this.puntoA, this.puntoA);
+          break;
+
+        case TipoTrazo.seleccionar:
+          this.servicioCapas.seleccionarCapa(this.puntoA);
+          break;
+      }
     }
-    /**Trazar capas */
-    this.dibujarTrazos();
   }
 
   /** El cursor es movido dentro del elemento*/
@@ -42,46 +60,43 @@ export class LienzoComponent implements AfterViewInit {
     this.setWidth.emit(~~($event.clientX - bounds.left));
     this.setHeight.emit(~~($event.clientY - bounds.top));
     /**Para dibujar la liena */
-    this.puntoB.x = $event.clientX - bounds.left - this.margenError;
-    this.puntoB.y = $event.clientY - bounds.top - this.margenError;
-    /**Trazar capas */
-    this.dibujarTrazos();
-  }
+    this.puntoB = {
+      x: ~~(0.5 + ($event.clientX - bounds.left - this.margenError)),
+      y: ~~(0.5 + ($event.clientY - bounds.top - this.margenError))
+    };
 
-  /**El click de mouse es saltado */
-  public oMouseUp(canvas: HTMLElement, $event) {
-    if (this.servicioCapas.isDrawin)
-      this.setPoint();
-  }
-
-  /**El mouse se mueve fuera del elemento */
-  public oMouseOver(canvas: HTMLElement, $event) {
-    if (this.servicioCapas.isDrawin)
-      this.setPoint();
-
-  }
-
-  /**Refactor. Metodo llamado oMouseDown y oMouseMove */
-  private dibujarTrazos() {
     switch (this.buttonActive) {
       case TipoTrazo.linea:
-        if (this.servicioCapas.isDrawin)
-          this.servicioCapas.drawCapas(this.puntoA, this.puntoB);
-        break;
       case TipoTrazo.lapiz:
-
-        break;
-      case TipoTrazo.pincel:
-
-        break;
-      case TipoTrazo.extractor:
-
+      case TipoTrazo.circulo:
+      case TipoTrazo.elipse:
+      case TipoTrazo.cuadrado:
+      case TipoTrazo.rectangulo:
+      case TipoTrazo.pentagono:
+      case TipoTrazo.hexagono:
+      case TipoTrazo.octagono:
+      case TipoTrazo.poligono:
+      case TipoTrazo.triangulo:
+        this.servicioCapas.drawCapas(this.puntoA, this.puntoB);
         break;
     }
   }
 
-  private setPoint() {
-    this.servicioCapas.setNewPoint(this.puntoA, this.puntoB)
+  /**El click de mouse es saltado */
+  public oMouseUp(canvas: HTMLElement, $event) {
+    if (this.servicioCapas.isDrawin && this.buttonActive !== TipoTrazo.seleccionar)
+      this.setCapa();
+  }
+
+  /**El mouse se mueve fuera del elemento */
+  public oMouseOver(canvas: HTMLElement, $event) {
+    if (this.servicioCapas.isDrawin && this.buttonActive !== TipoTrazo.seleccionar)
+      this.setCapa();
+
+  }
+
+  private setCapa() {
+    this.servicioCapas.setNewCapa();
     this.servicioCapas.isDrawin = false;
     this.servicioCapas.drawCapas(this.puntoA, this.puntoB);
   }
@@ -91,7 +106,6 @@ export class LienzoComponent implements AfterViewInit {
   }
 
   private margenError = 15;
-
   private puntoA: ParCoordenada = { x: 0, y: 0 };
   private puntoB: ParCoordenada = { x: 0, y: 0 };
 }

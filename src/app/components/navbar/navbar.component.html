@@ -8,23 +8,24 @@
   </button>
 
   <div class="collapse navbar-collapse ml-4" id="navbarTogglerDemo02">
-    <ul class="navbar-nav mr-auto text-white">
+    <ul class="navbar-nav text-white">
+      <app-archivo (setButtonActive)="setbuttonActive($event)"
+        [buttonActive]="buttonActive"></app-archivo>
 
-      <div class="col mr-4 text-center">
-        <p class="mb-0">Abrir</p>
-        <div class="row">
-          <li class="nav-item">
-            <i class="nav-link fas fa-folder-open fa-5x"> </i>
-          </li>
-        </div>
-      </div>
+      <app-imagen (setButtonActive)="setbuttonActive($event)"
+        [buttonActive]="buttonActive"></app-imagen>
 
-      <app-opciones></app-opciones>
+      <app-capa (setButtonActive)="setbuttonActive($event)"
+        [buttonActive]="buttonActive"></app-capa>
 
       <app-herramientas (setButtonActive)="setbuttonActive($event)"
         [buttonActive]="buttonActive"></app-herramientas>
 
-      <app-figuras></app-figuras>
+      <app-figuras (setButtonActive)="setbuttonActive($event)"
+        [buttonActive]="buttonActive"></app-figuras>
+
+      <app-sombra (setButtonActive)="setbuttonActive($event)"
+        [buttonActive]="buttonActive"></app-sombra>
     </ul>
   </div>
 </nav>
