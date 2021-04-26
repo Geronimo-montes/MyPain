@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
-import { ParCoordenada } from '../model/capa.model';
+import { Capa, ParCoordenada } from '../model/capa.model';
+import { DibujarRotacionService } from './dibujar-rotacion.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DibujarCirculoElipseService {
 
-  constructor() { }
+  constructor(
+    private rotar: DibujarRotacionService,
+  ) { }
 
   /**
    * @name circulo
@@ -16,39 +19,16 @@ export class DibujarCirculoElipseService {
    * @returns Array de puntos correspondientes a un circulo
    */
   public circulo(puntoA: ParCoordenada, puntoB: ParCoordenada, factorReduce: number): ParCoordenada[] {
-    return this.circuloCalcularPuntos(puntoA, puntoB);
-  }
-
-  /**
-   * @name elipse
-   * @param puntoA 
-   * @param puntoB 
-   * @param factorReduce 
-   * @returns 
-   * @description Calcula los puntos correspondientes a una elipse
-   */
-  public elipse(puntoA: ParCoordenada, puntoB: ParCoordenada, factorReduce: number): ParCoordenada[] {
-    return this.elipseCalculorPuntos(puntoA, puntoB)
-  }
-
-  /**
-   * @name circuloCalcularPuntos
-   * @param puntoA 
-   * @param puntoB 
-   * @description Calcula los puntos por donde pasa el circulo dado dos puntos
-   * @returns array de puntos por donde pasa el circulo
-   */
-  private circuloCalcularPuntos(puntoA: ParCoordenada, puntoB: ParCoordenada): ParCoordenada[] {
     var
       puntos: ParCoordenada[] = [],
       centro = { x: puntoA.x, y: puntoA.y, },
       //calculo de la distancia entre dos puntos par el valor del radio
       radio = Math.sqrt(Math.pow(puntoB.x - puntoA.x, 2) + Math.pow(puntoB.y - puntoA.y, 2)),
       x = 0,
-      y = radio,
+      y = Math.round(radio),
       p = 1 - radio;
 
-    while (x < y) {
+    while (x <= y) {
       puntos = this.agregarOctantes(puntos, centro, x, y);
       x++;
       if (p <= 0) {
@@ -70,7 +50,7 @@ export class DibujarCirculoElipseService {
    * @description Establece los ocho octantes con respecto a los valores
    * @returns Calculo de los ocho octantes en base a los datos proporcionados
    */
-  private agregarOctantes(puntos: ParCoordenada[], centro, x, y): ParCoordenada[] {
+  private agregarOctantes(puntos: ParCoordenada[], centro: ParCoordenada, x: number, y: number): ParCoordenada[] {
     puntos.push({ x: centro.x + x, y: centro.y + y });
     puntos.push({ x: centro.x + x, y: centro.y - y });
     puntos.push({ x: centro.x - x, y: centro.y + y });
@@ -83,19 +63,20 @@ export class DibujarCirculoElipseService {
   }
 
   /**
- * @name elipseCalculorPuntos
- * @param puntoA 
- * @param puntoB 
- * @description Calcula los puntos por donde pasa la elipse
- * @returns Array de puntos por donde pasa la elipse
+ * @name elipse
+ * @param capa
+ * @returns 
+ * @description Calcula los puntos correspondientes a una elipse
  */
-  private elipseCalculorPuntos(puntoA: ParCoordenada, puntoB: ParCoordenada): ParCoordenada[] {
+  public elipse(capa: Capa): Capa {
     var
-      ry = Math.abs(puntoB.y - puntoA.y),
-      rx = Math.abs(puntoB.x - puntoA.x),
+      ry = Math.abs(capa.puntoB.y - capa.puntoA.y),
+      rx = Math.abs(capa.puntoB.x - capa.puntoA.x),
       puntos: ParCoordenada[] = [],
+      vertices: ParCoordenada[] = [],
       x, y, p, px, py,
       rx2, ry2, tworx2, twory2;
+
     ry2 = ry * ry;
     rx2 = rx * rx;
     twory2 = 2 * ry2;
@@ -103,7 +84,9 @@ export class DibujarCirculoElipseService {
     /* región 1 */
     x = 0;
     y = ry;
-    puntos = this.agregarPuntosElipse(puntos, puntoA, x, y);
+    puntos = this.agregarPuntosElipse(puntos, capa.puntoA, x, y, capa.angulo);
+    vertices = this.agregarPuntosElipse(vertices, capa.puntoA, x, y, capa.angulo);
+
     p = Math.round(ry2 - rx2 * ry + 0.25 * rx2);
     px = 0;
     py = tworx2 * y;
@@ -118,7 +101,7 @@ export class DibujarCirculoElipseService {
         py = py - tworx2;
         p = p + ry2 + px - py;
       }
-      puntos = this.agregarPuntosElipse(puntos, puntoA, x, y);
+      puntos = this.agregarPuntosElipse(puntos, capa.puntoA, x, y, capa.angulo);
     }
 
     /* región 2 */
@@ -136,9 +119,12 @@ export class DibujarCirculoElipseService {
         px = px + twory2;
         p = p + rx2 + py + px;
       }
-      puntos = this.agregarPuntosElipse(puntos, puntoA, x, y);
+      puntos = this.agregarPuntosElipse(puntos, capa.puntoA, x, y, capa.angulo);
     }
-    return puntos;
+    vertices = this.agregarPuntosElipse(vertices, capa.puntoA, x, y, capa.angulo);
+    capa.puntos = puntos;
+    capa.vertices = vertices;
+    return capa;
   }
 
   /**
@@ -150,11 +136,18 @@ export class DibujarCirculoElipseService {
    * @description Agrega cuatro puntos correspondientes a lado contrario del calculo
    * @returns Array con los puntos agregados
    */
-  private agregarPuntosElipse(puntos: ParCoordenada[], centro, x, y): ParCoordenada[] {
-    puntos.push({ x: centro.x + x, y: centro.y + y });
-    puntos.push({ x: centro.x - x, y: centro.y + y });
-    puntos.push({ x: centro.x + x, y: centro.y - y });
-    puntos.push({ x: centro.x - x, y: centro.y - y });
+  private agregarPuntosElipse(_puntos: ParCoordenada[], centro, x, y, angulo): ParCoordenada[] {
+    let puntos: ParCoordenada[] = _puntos;
+    let
+      punto1: ParCoordenada = this.rotar.rotacion(centro, { x: centro.x + x, y: centro.y + y }, angulo),
+      punto2: ParCoordenada = this.rotar.rotacion(centro, { x: centro.x - x, y: centro.y + y }, angulo),
+      punto3: ParCoordenada = this.rotar.rotacion(centro, { x: centro.x + x, y: centro.y - y }, angulo),
+      punto4: ParCoordenada = this.rotar.rotacion(centro, { x: centro.x - x, y: centro.y - y }, angulo);
+
+    puntos.push(punto1);
+    puntos.push(punto2);
+    puntos.push(punto3);
+    puntos.push(punto4);
     return puntos;
   }
 }

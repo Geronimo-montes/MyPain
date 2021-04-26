@@ -1,5 +1,6 @@
 <canvas id="canvasId" #canvas (mousemove)="oMouseMove(canvas, $event)"
   (mousedown)="oMouseDown(canvas, $event)" (mouseup)="oMouseUp(canvas, $event)"
-  (mouseover)="oMouseOver(canvas, $event)"
+  (mouseover)="oMouseUp(canvas, $event)" (click)="oMouseClic(canvas, $event)"
+  (contextmenu)="oMouseClicDer(canvas, $event)"
   class=" shadow-lg p-3 mb-5 bg-white rounded" id="myCanvas">
 </canvas>

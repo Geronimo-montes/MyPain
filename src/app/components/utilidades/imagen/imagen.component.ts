@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { TipoTrazo } from "src/app/model/tipo-trazo.model";
+import { eventoCanvas } from 'src/app/model/capa.model';
+import { HerramientaCapa } from "src/app/model/tipo-trazo.model";
+import { CapasService } from 'src/app/services/capas.service';
 
 @Component({
   selector: 'app-imagen',
@@ -7,19 +9,25 @@ import { TipoTrazo } from "src/app/model/tipo-trazo.model";
 })
 export class ImagenComponent implements OnInit {
 
-  @Input() buttonActive: TipoTrazo;
-  @Output() setButtonActive = new EventEmitter<TipoTrazo>();
+  @Input() herramientaActiva: HerramientaCapa;
+  @Output() setButtonActive = new EventEmitter<HerramientaCapa>();
 
-  constructor() { }
+  constructor(
+    private servicioCapas: CapasService,
+  ) { }
   ngOnInit(): void { }
 
-  /**
-   * @name _setButtonActive
-   * @param valor Boton que lanzo la accion
-   * @description Funcion que permite emitir un valor al componente padre (navbar)
-   * con el valor del boton que lanzo la accion
-   */
-  public _setButtonActive(valor: TipoTrazo) {
+  public _setButtonActive(valor: HerramientaCapa) {
     this.setButtonActive.emit(valor);
+  }
+
+  public rotarTrazo(valor) {
+    if (this.servicioCapas.isSelected && !(this.servicioCapas.eventoActual === eventoCanvas.isDrawin)) {
+
+    }
+  }
+
+  get isSelected(): boolean {
+    return this.servicioCapas.isSelected;
   }
 }

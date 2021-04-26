@@ -3,26 +3,34 @@
   <div class="col">
     <div class="row">
       <button class="btn btn-outline-secondary col m-1"
-        (click)="_setButtonActive(5);" [class.active]="buttonActive === 5">
+        (click)="_setButtonActive(1);" [class.active]="herramientaActiva === 1">
         <i class="h3 text-primary icon-cursor mt-1"></i>
       </button>
+
       <button class="btn btn-outline-secondary col m-1"
-        (click)="_setButtonActive(6);" [class.active]="buttonActive === 6">
+        (click)="_setButtonActive(2);" [class.active]="herramientaActiva === 2">
+        <i class="h5 text-primary fas fa-eye-dropper mt-1"></i>
+      </button>
+
+      <button class="btn btn-outline-secondary col m-1"
+        (click)="_setButtonActive(3);" [class.active]="herramientaActiva === 3">
         <i class="h3 text-primary icon-resize mt-1"></i>
       </button>
+
       <button class="btn btn-outline-secondary col m-1"
-        (click)="_setButtonActive(7);" [class.active]="buttonActive === 7">
+        (click)="_setButtonActive(4);" [class.active]="herramientaActiva === 4">
         <i class="h3 text-primary icon-drag mt-1"></i>
       </button>
     </div>
     <div class="row">
       <button class="btn btn-outline-secondary col m-1"
-        (click)="_setButtonActive(8);" [class.active]="buttonActive === 8">
-        <i class="h3 text-primary icon-flip_horizontal mt-1"></i>
+        (click)="_setButtonActive(5);" [class.active]="herramientaActiva === 5">
+        <i class="h5 text-primary fas fa-eraser mt-1"></i>
       </button>
+
       <button class="btn btn-outline-secondary col m-1"
-        (click)="_setButtonActive(9);" [class.active]="buttonActive === 9">
-        <i class="h3 text-primary icon-flip_vertical mt-1"></i>
+        (click)="_setButtonActive(6);" [class.active]="herramientaActiva === 6">
+        <i class=" h3 text-primary icon-flip_vertical mt-1"></i>
       </button>
     </div>
   </div>

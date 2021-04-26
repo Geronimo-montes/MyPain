@@ -20,8 +20,10 @@
     "@angular/platform-browser-dynamic": "~10.2.0",
     "@angular/router": "~10.2.0",
     "@popperjs/core": "^2.8.4",
+    "@types/jquery": "^3.5.5",
+    "jquery": "^3.6.0",
     "rxjs": "~6.6.0",
-    "sweetalert2": "^10.15.5",
+    "sweetalert2": "^10.16.6",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
   },

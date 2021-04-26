@@ -7,15 +7,18 @@ import { Color } from "./color.model";
  * selected: boolean puntos: paresCoordenadas[]
  */
 export interface Capa {
-  puntoA: ParCoordenada,
-  puntoB: ParCoordenada,
-  vertices: ParCoordenada[], //pendiente
+  index: number
+  puntoA: ParCoordenada, //centro del trazo
+  puntoB: ParCoordenada, //punto base para el trazo de la capa
+  vertices?: ParCoordenada[], //vertices del trazo
+  indexPuntoRisize?: number, //usado cuando se ridemensiona la capa
+  numeroLados: number,
   tipoTrazo: TipoTrazo,
   colorTrazo: Color,
+  colorRelleno: Color,
   anchoTrazo: number,
-  puntos: ParCoordenada[],
-  selected: boolean,
-  index: number
+  angulo: number, //angulo de rotacion
+  puntos?: ParCoordenada[], //coleccion de puntos que conforman el trazo
 }
 
 /**
@@ -25,4 +28,16 @@ export interface Capa {
 export interface ParCoordenada {
   x: number,
   y: number
+}
+
+/**
+ * @name eventoCanvas
+ * @description Eventos que se presentan en el canvas de manera exclusiva
+ */
+export enum eventoCanvas {
+  sinEvento = 0,
+  isDrawin = 1,
+  isResize = 2,
+  isMove = 3,
+  isRotate = 4,
 }

@@ -17,12 +17,6 @@ export class FigurasComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  /**
- * @name _setButtonActive
- * @param valor Boton que lanzo la accion
- * @description Funcion que permite emitir un valor al componente padre (navbar)
- * con el valor del boton que lanzo la accion
- */
   public _setButtonActive(valor: TipoTrazo) {
     this.setButtonActive.emit(valor);
   }

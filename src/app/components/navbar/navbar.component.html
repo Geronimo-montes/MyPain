@@ -9,23 +9,17 @@
 
   <div class="collapse navbar-collapse ml-4" id="navbarTogglerDemo02">
     <ul class="navbar-nav text-white">
-      <app-archivo (setButtonActive)="setbuttonActive($event)"
-        [buttonActive]="buttonActive"></app-archivo>
+      <app-archivo></app-archivo>
 
-      <app-imagen (setButtonActive)="setbuttonActive($event)"
-        [buttonActive]="buttonActive"></app-imagen>
+      <app-imagen (setButtonActive)="setHerramientaActiva($event)"
+        [herramientaActiva]="herramientaActiva"></app-imagen>
 
-      <app-capa (setButtonActive)="setbuttonActive($event)"
-        [buttonActive]="buttonActive"></app-capa>
+      <app-capa [herramientaActiva]="herramientaActiva"></app-capa>
 
-      <app-herramientas (setButtonActive)="setbuttonActive($event)"
-        [buttonActive]="buttonActive"></app-herramientas>
+      <app-figuras (setButtonActive)="setTrazoActivo($event)"
+        [buttonActive]="trazoActivo"></app-figuras>
 
-      <app-figuras (setButtonActive)="setbuttonActive($event)"
-        [buttonActive]="buttonActive"></app-figuras>
-
-      <app-sombra (setButtonActive)="setbuttonActive($event)"
-        [buttonActive]="buttonActive"></app-sombra>
+      <app-sombra></app-sombra>
     </ul>
   </div>
 </nav>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TipoTrazo } from "src/app/model/tipo-trazo.model";
+import { HerramientaCapa, TipoTrazo } from "src/app/model/tipo-trazo.model";
 import { CapasService } from 'src/app/services/capas.service';
 
 @Component({
@@ -10,18 +10,25 @@ import { CapasService } from 'src/app/services/capas.service';
 })
 export class NavbarComponent implements OnInit {
 
-
   constructor(
     private servicioCapas: CapasService,
   ) { }
 
   ngOnInit(): void { }
 
-  public setbuttonActive(valor: TipoTrazo) {
-    this.servicioCapas.buttonActive = valor;
+  public setTrazoActivo(valor: TipoTrazo) {
+    this.servicioCapas.trazoActiva = valor;
   }
 
-  get buttonActive(): TipoTrazo {
-    return this.servicioCapas.buttonActive;
+  public setHerramientaActiva(valor: HerramientaCapa) {
+    this.servicioCapas.herramientaActiva = valor;
+  }
+
+  get trazoActivo(): TipoTrazo {
+    return this.servicioCapas.trazoActiva;
+  }
+
+  get herramientaActiva(): HerramientaCapa {
+    return this.servicioCapas.herramientaActiva;
   }
 }

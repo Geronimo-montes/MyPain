@@ -27,8 +27,17 @@ export class FooterComponent implements OnInit {
     return this.servicioCapas.colorTrazo;
   }
 
+  get colorRelleno(): Color {
+    return this.servicioCapas.colorRelleno;
+  }
+
   set colorActivo(color: Color) {
     this.servicioCapas.colorTrazo = color;
+  }
+
+  public setColorRelleno(valor: Color) {
+    this.servicioCapas.colorRelleno = valor;
+    return false;
   }
 
   get anchoTrazo(): number {
@@ -50,4 +59,6 @@ export class FooterComponent implements OnInit {
   get max(): number {
     return maxAncho;
   }
+
+
 }

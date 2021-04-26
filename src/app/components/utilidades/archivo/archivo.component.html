@@ -2,25 +2,33 @@
   <p class="mb-0">Archivo</p>
   <div class="col">
     <div class="row">
-      <button class="btn btn-outline-secondary m-1">
+      <input type="file" style="display: none;" #inputFile
+        (change)="abrirProyecto($event)">
+      <!-- open -->
+      <button class="btn btn-outline-secondary m-1"
+        (click)="inputFile.click();">
         <i class="h3 text-warning fas fa-folder-open fa-5x"> </i>
       </button>
       <div class="col">
         <div class="row">
-          <button class="btn btn-outline-secondary col m-1">
+          <!-- guardar -->
+          <button class="btn btn-outline-secondary col m-1"
+            (click)="guardarProyecto();">
             <i class="h5 text-white fas fa-save mt-1"></i>
           </button>
-          <button class="btn btn-outline-secondary col m-1">
+          <!-- generar -->
+          <button class="btn btn-outline-secondary col m-1"
+            (click)="generarImg()">
             <i class="h5 text-white fas fa-image mt-1"></i>
           </button>
         </div>
         <div class="row">
+          <!-- undo -->
           <button class="btn btn-outline-secondary col m-1">
-
             <i class="h3 icon-undo mt-1"></i>
           </button>
+          <!-- redo -->
           <button class="btn btn-outline-secondary col m-1">
-
             <i class="h3 icon-redo mt-1"></i>
           </button>
         </div>

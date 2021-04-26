@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Capa, ParCoordenada } from '../model/capa.model';
+import { ParCoordenada } from '../model/capa.model';
 
 enum signo {
   negativo = -1,
@@ -39,8 +39,8 @@ export class DibujarLineaService {
    */
   private identificarCuadrante(puntoA: ParCoordenada, puntoB: ParCoordenada): ParCoordenada[] {
     var
-      dx = ~~(Math.abs(puntoB.x - puntoA.x)),
-      dy = ~~(Math.abs(puntoB.y - puntoA.y)),
+      dx = ~~(0.5 + Math.abs(puntoB.x - puntoA.x)),
+      dy = ~~(0.5 + Math.abs(puntoB.y - puntoA.y)),
       x = puntoA.x,
       y = puntoA.y,
       e = ~~(2 * dy - dx); //Distancia entre la linea ideal que se desea trazar y el pixel que queda mas cerc,

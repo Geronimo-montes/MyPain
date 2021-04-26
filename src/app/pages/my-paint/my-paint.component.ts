@@ -12,7 +12,7 @@ export class MyPaintComponent implements OnInit {
   ngOnInit(): void { }
 
   get buttonActive(): TipoTrazo {
-    return this.servicioCapa.buttonActive;
+    return this.servicioCapa.trazoActiva;
   }
 
   public width: number = 0;
