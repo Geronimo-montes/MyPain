@@ -13,6 +13,10 @@ export class ArchivoComponent {
     private servicioCapas: CapasService,
   ) { }
 
+  public getAcepted(): string {
+    return 'application/json';
+  }
+
   public abrirProyecto($event) {
     let archivo = $event.target.files[0];
     var contenido: Capa[];

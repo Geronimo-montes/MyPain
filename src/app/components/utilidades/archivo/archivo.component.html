@@ -2,8 +2,8 @@
   <p class="mb-0">Archivo</p>
   <div class="col">
     <div class="row">
-      <input type="file" style="display: none;" #inputFile
-        (change)="abrirProyecto($event)">
+      <input type="file" [accept]="getAcepted()" style="display: none;"
+        #inputFile (change)="abrirProyecto($event)">
       <!-- open -->
       <button class="btn btn-outline-secondary m-1"
         (click)="inputFile.click();">

@@ -215,7 +215,6 @@ export class LienzoComponent implements AfterViewInit {
     return this.servicioCapas.herramientaActiva;
   }
 
-  src = "assets/img.png";
   private margenError = 15;
   private puntoA: ParCoordenada = { x: 0, y: 0 };
   private puntoB: ParCoordenada = { x: 0, y: 0 };
